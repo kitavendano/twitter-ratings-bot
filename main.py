@@ -1,6 +1,7 @@
 from keys import *
 import tweepy
 import time
+import requests
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
@@ -29,9 +30,19 @@ def reply_to_tweets():
   for mention in reversed(mentions):
       print(str(mention.id) + ' - ' + mention.full_text, flush=True)
       last_seen_id = mention.id
+
+      tweet = mention.full_text
+      movie_title = tweet.replace("@FilmBot3", "").lstrip()
+
       store_last_seen_id(last_seen_id, FILE_NAME)
-      api.update_status('@' + mention.user.screen_name + ' ' +
-              'Whaddup boo!', mention.id)
+      x = requests.get('http://www.omdbapi.com/?apikey=' + OMDB_PI_KEY + '&t=' + movie_title)
+      response = x.json()
+      title_n_year = response['Title'] + ' ' + response['Year']
+      imdb = response['Ratings'][0]['Source'] + ': ' + response['Ratings'][0]['Value']
+      rotten_tomatoes = response['Ratings'][1]['Source'] + ': ' + response['Ratings'][1]['Value']
+      metacritic = response['Ratings'][2]['Source'] + ': ' + response['Ratings'][2]['Value']
+
+      api.update_status('@' + mention.user.screen_name + ' ' + title_n_year + ' ' + imdb + ' ' + rotten_tomatoes + ' ' + metacritic, mention.id)
 
 while True:
   reply_to_tweets()
