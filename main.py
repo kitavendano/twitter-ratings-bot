@@ -38,11 +38,13 @@ def reply_to_tweets():
       x = requests.get('http://www.omdbapi.com/?apikey=' + OMDB_PI_KEY + '&t=' + movie_title)
       response = x.json()
       title_n_year = response['Title'] + ' ' + response['Year']
-      imdb = response['Ratings'][0]['Source'] + ': ' + response['Ratings'][0]['Value']
-      rotten_tomatoes = response['Ratings'][1]['Source'] + ': ' + response['Ratings'][1]['Value']
-      metacritic = response['Ratings'][2]['Source'] + ': ' + response['Ratings'][2]['Value']
 
-      api.update_status('@' + mention.user.screen_name + ' ' + title_n_year + ' ' + imdb + ' ' + rotten_tomatoes + ' ' + metacritic, mention.id)
+      mylist = response['Ratings']
+      ratings = ""
+      for item in mylist:
+        ratings += item['Source'] + ': ' + item['Value'] + ' '
+
+      api.update_status('@' + mention.user.screen_name + ' ' + title_n_year + ' ' + ratings, mention.id)
 
 while True:
   reply_to_tweets()
