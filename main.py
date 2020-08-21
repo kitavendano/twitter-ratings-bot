@@ -49,7 +49,7 @@ def reply_to_tweets():
           ratings += '📽️' + item['Source'] + ': ' + item['Value'] + '\n'
         message = ' ' + title_n_year + '\n' + ratings
       else:
-        message = ' ' + 'No Title found. Perhaps you mispelled it? Please try again or report this bug in github:' + ' ' + github_url
+        message = ' ' + 'Checked the whole house. Sorry, I cannot find what you were looking for. Perhaps you mispelled it? Please try again or report this bug in github:' + ' ' + github_url
 
       api.update_status('@' + mention.user.screen_name +  message, mention.id)
 

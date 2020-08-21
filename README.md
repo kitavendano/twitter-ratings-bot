@@ -8,8 +8,10 @@ Twiiter Bot using Tweepy and OMDB API
 - ~~Deploy Python Script in pythonanywhere~~
 - ~~Connect OMDB API to Bot~~
 - Check usage if the twitter account is private
-- ~~Create Tweet if response is not 200. if there is no movioe found.~~
-- Clean reply tweet with new lines
-- Add more info about movie.
+- ~~Create Tweet if response is not successful. if there is no movioe found.~~
+- ~~Clean reply tweet with new lines~~
+- Add more info about movie(Genre, Director, Actors)
 - Clean code
 - Disregard mentions of other accounts when processing tweets.
+- an array of responses when No Title Found.
+- create documentation
