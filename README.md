@@ -12,3 +12,4 @@ Twiiter Bot using Tweepy and OMDB API
 - Clean reply tweet with new lines
 - Add more info about movie.
 - Clean code
+- Disregard mentions of other accounts when processing tweets.
