@@ -7,6 +7,8 @@ auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 api = tweepy.API(auth)
 
+github_url = 'https://github.com/kitavendano/twitter-ratings-bot/issues'
+
 FILE_NAME = 'last_seen_id.txt'
 
 def retrieve_last_seen_id(file_name):
@@ -37,14 +39,19 @@ def reply_to_tweets():
       store_last_seen_id(last_seen_id, FILE_NAME)
       x = requests.get('http://www.omdbapi.com/?apikey=' + OMDB_PI_KEY + '&t=' + movie_title)
       response = x.json()
-      title_n_year = response['Title'] + ' ' + response['Year']
 
-      mylist = response['Ratings']
-      ratings = ""
-      for item in mylist:
-        ratings += item['Source'] + ': ' + item['Value'] + ' '
+      if response['Response'] == 'True':
+        title_n_year = response['Title'] + ' ' + response['Year']
 
-      api.update_status('@' + mention.user.screen_name + ' ' + title_n_year + ' ' + ratings, mention.id)
+        mylist = response['Ratings']
+        ratings = ""
+        for item in mylist:
+          ratings += '📽️' + item['Source'] + ': ' + item['Value'] + '\n'
+        message = ' ' + title_n_year + '\n' + ratings
+      else:
+        message = ' ' + 'No Title found. Perhaps you mispelled it? Please try again or report this bug in github:' + ' ' + github_url
+
+      api.update_status('@' + mention.user.screen_name +  message, mention.id)
 
 while True:
   reply_to_tweets()
